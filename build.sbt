@@ -8,4 +8,4 @@ resolvers += "Akka Snapshot Repository" at "https://repo.akka.io/snapshots/"
 
 scalaVersion := "2.13.5"
 
-libraryDependencies ++= Seq(jdbc, ehcache, ws, specs2 % Test, guice)
+libraryDependencies ++= Seq("org.postgresql" % "postgresql" % "42.3.3", "com.typesafe.slick" %% "slick-codegen" % "3.3.3", "com.typesafe.slick" %% "slick" % "3.3.3", ehcache, ws, specs2 % Test, guice)
