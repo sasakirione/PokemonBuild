@@ -5,7 +5,6 @@ import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.PostgresProfile
 import slick.jdbc.PostgresProfile.api._
 import dto.Tables._
-import play.api.mvc.Results._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
