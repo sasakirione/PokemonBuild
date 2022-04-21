@@ -7,9 +7,9 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext.Implicits.global
 
 @Singleton
-class UserController @Inject()(cc: ControllerComponents, uc: UserUseCase) extends AbstractController(cc) {
+class UserController @Inject()(cc: ControllerComponents, userUseCase: UserUseCase) extends AbstractController(cc) {
     def findUser(userToken: String): Action[AnyContent] = Action.async {
-      uc.login(userToken).map(
+      userUseCase.login(userToken).map(
         Ok(_)
       ).recover {
         case exception: Exception => InternalServerError(exception.getMessage)

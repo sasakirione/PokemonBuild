@@ -14,7 +14,7 @@ class UserRepository @Inject()(protected val dbConfigProvider: DatabaseConfigPro
     extends TUserRepository  with HasDatabaseConfigProvider[PostgresProfile] {
 
   def existUser(userToken: String): Future[Boolean] = {
-    db.run(User.filter(_.token == userToken).length.result).map {
+    db.run(User.filter(_.token === userToken).length.result).map {
       case 0 => false
       case _ => true
     }
@@ -26,12 +26,12 @@ class UserRepository @Inject()(protected val dbConfigProvider: DatabaseConfigPro
   }
 
   def findUser(userToken: String): Future[String]  = {
-    val query = User.filter(_.token == userToken).result.head
+    val query = User.filter(_.token === userToken).result.head
     db.run(query).map(_.name)
   }
 
   def updateName(userToken: String, newName: String): Future[Int] = {
-    val query = User.filter(_.token == userToken).map(_.name).update(newName)
+    val query = User.filter(_.token === userToken).map(_.name).update(newName)
     db.run(query)
   }
 }

@@ -2,6 +2,7 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-# An example controller showing a sample home page
-GET     /                           controllers.HomeController.index
+# ユーザー周り
 GET     /login/:userToken           controllers.UserController.findUser(userToken: String)
+
+# 構築周り

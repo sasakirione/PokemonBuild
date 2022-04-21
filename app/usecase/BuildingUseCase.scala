@@ -1,0 +1,5 @@
+package usecase
+
+class BuildingUseCase {
+
+}
