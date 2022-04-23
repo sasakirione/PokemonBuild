@@ -3,8 +3,8 @@ package repository
 import scala.concurrent.Future
 
 trait TUserRepository {
-  def existUser(userToken: String): Future[Boolean]
-  def createUser(userToken: String): Future[String]
-  def findUser(userToken: String): Future[String]
-  def updateName(userToken: String, newName: String): Future[Int]
+  def existUser(uid: String): Future[Boolean]
+  def createUser(uid: String): Future[String]
+  def findUser(uid: String): Future[String]
+  def updateName(uid: String, newName: String): Future[Int]
 }

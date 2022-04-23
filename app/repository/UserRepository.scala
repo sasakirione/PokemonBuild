@@ -12,25 +12,25 @@ import scala.concurrent.Future
 class UserRepository @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
     extends TUserRepository  with HasDatabaseConfigProvider[PostgresProfile] {
 
-  def existUser(userToken: String): Future[Boolean] = {
-    db.run(User.filter(_.token === userToken).length.result).map {
+  def existUser(uid: String): Future[Boolean] = {
+    db.run(User.filter(_.token === uid).length.result).map {
       case 0 => false
       case _ => true
     }
   }
 
-  def createUser(userToken: String): Future[String] = {
-    val query = User returning User.map(user => user.name) += UserRow(userToken, null ,0, null, null, "ポケモントレーナー")
+  def createUser(uid: String): Future[String] = {
+    val query = User returning User.map(user => user.name) += UserRow(uid, null ,0, null, null, "ポケモントレーナー")
     db.run(query)
   }
 
-  def findUser(userToken: String): Future[String]  = {
-    val query = User.filter(_.token === userToken).result.head
+  def findUser(uid: String): Future[String]  = {
+    val query = User.filter(_.token === uid).result.head
     db.run(query).map(_.name)
   }
 
-  def updateName(userToken: String, newName: String): Future[Int] = {
-    val query = User.filter(_.token === userToken).map(_.name).update(newName)
+  def updateName(uid: String, newName: String): Future[Int] = {
+    val query = User.filter(_.token === uid).map(_.name).update(newName)
     db.run(query)
   }
 }
