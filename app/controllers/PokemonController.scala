@@ -15,5 +15,11 @@ class PokemonController @Inject()(cc: ControllerComponents, pokemonUseCase: Poke
     )
   }
 
+  def getPokemon(pokemonId: Int): Action[AnyContent] = Action.async {
+    pokemonUseCase.getPokemonData(pokemonId).map(pokemon =>
+      Ok(pokemon)
+    )
+  }
+
 
 }

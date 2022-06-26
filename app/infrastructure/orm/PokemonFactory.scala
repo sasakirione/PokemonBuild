@@ -10,11 +10,26 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class PokemonFactory @Inject()(private val pokemonRepository: PokemonRepository){
-  def getPokemonData(id: Int, form: Int): Future[Pokemon] = {
-    val pokemon = pokemonRepository.getPokemon(id, form)
-    pokemon.flatMap(pokemon =>
-      makePokemonObject(id,form, pokemon)
-    )
+  def getPokemonData(pokemonId: Int): Future[Pokemon] = {
+    val pokemonType = getPokemonType(pokemonId)
+    val pokemonBaseValue = getPokemonBaseValue(pokemonId)
+    val pokemonAbilities = pokemonRepository.getPokemonAbility(pokemonId)
+    val pokemon = pokemonRepository.getPokemon(pokemonId)
+    for {
+      pokemonType <- pokemonType
+      pokemonBaseValue <- pokemonBaseValue
+      pokemonAbilities <- pokemonAbilities
+      pokemon <- pokemon
+    } yield {
+      new Pokemon(
+        pokemonNo = pokemon.id,
+        pokemonFormNo = pokemon.form,
+        name = pokemon.name,
+        pokemonType = pokemonType,
+        pokemonBaseValue = pokemonBaseValue,
+        pokemonAbilities = pokemonAbilities
+      )
+    }
   }
 
   private def getPokemonType(pokemonId: Int): Future[PokemonType] = {
@@ -34,26 +49,6 @@ class PokemonFactory @Inject()(private val pokemonRepository: PokemonRepository)
         speed = pokemonBaseValue.s
       )
     )
-  }
-
-  private def makePokemonObject(id: Int, form: Int, pokemon: Tables.PokemonRow): Future[Pokemon] = {
-    val pokemonType = getPokemonType(pokemon.pokemonId)
-    val pokemonBaseValue = getPokemonBaseValue(pokemon.pokemonId)
-    val pokemonAbilities = pokemonRepository.getPokemonAbility(pokemon.pokemonId)
-    for {
-      pokemonType <- pokemonType
-      pokemonBaseValue <- pokemonBaseValue
-      pokemonAbilities <- pokemonAbilities
-    } yield {
-      new Pokemon(
-        pokemonNo = id,
-        pokemonFormNo = form,
-        name = pokemon.name,
-        pokemonType = pokemonType,
-        pokemonBaseValue = pokemonBaseValue,
-        pokemonAbilities = pokemonAbilities
-      )
-    }
   }
 
 }

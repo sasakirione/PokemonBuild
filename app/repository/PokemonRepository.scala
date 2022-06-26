@@ -26,8 +26,8 @@ class PokemonRepository @Inject()(protected val dbConfigProvider: DatabaseConfig
     ).result)
   }
 
-  def getPokemon(id: Int, form: Int): Future[PokemonRow] = {
-    db.run(Pokemon.filter(_.id === id).filter(_.form === form).result.head)
+  def getPokemon(pokemonId: Int): Future[PokemonRow] = {
+    db.run(Pokemon.filter(_.pokemonId === pokemonId).result.head)
   }
 
 

@@ -19,8 +19,8 @@ class PokemonUseCase @Inject()(private val pokemonRepository: PokemonRepository,
     Json.obj("pokemon" -> pokemons)
   )
 
-  def getPokemonData(no: Int, form: Int): Future[JsObject] =
-    pokemonFactory.getPokemonData(no, form).map(pokemon =>
+  def getPokemonData(pokemonId: Int): Future[JsObject] =
+    pokemonFactory.getPokemonData(pokemonId).map(pokemon =>
       Json.obj(
         "no" -> pokemon.pokemonNo,
         "form" -> pokemon.pokemonFormNo,
