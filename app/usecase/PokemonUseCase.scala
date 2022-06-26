@@ -1,5 +1,6 @@
 package usecase
 
+import infrastructure.orm.PokemonFactory
 import play.api.libs.json.{JsObject, Json}
 import repository.{PokemonRepository, UserRepository}
 
@@ -7,7 +8,7 @@ import javax.inject.Inject
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class PokemonUseCase @Inject()(private val pokemonRepository: PokemonRepository) {
+class PokemonUseCase @Inject()(private val pokemonRepository: PokemonRepository, private val pokemonFactory: PokemonFactory) {
   def getPokemonCandidateList(input: String): Future[JsObject] =
     pokemonRepository.findPokemonName(input).map(pokemons => pokemons.map(pokemon =>
       Json.obj(
@@ -18,4 +19,22 @@ class PokemonUseCase @Inject()(private val pokemonRepository: PokemonRepository)
     Json.obj("pokemon" -> pokemons)
   )
 
+  def getPokemonData(no: Int, form: Int): Future[JsObject] =
+    pokemonFactory.getPokemonData(no, form).map(pokemon =>
+      Json.obj(
+        "no" -> pokemon.pokemonNo,
+        "form" -> pokemon.pokemonFormNo,
+        "name" -> pokemon.name,
+        "type" -> pokemon.pokemonType.typeNames,
+        "ability" -> pokemon.pokemonAbilities,
+        "pokemonBaseValue" -> List(
+          pokemon.pokemonBaseValue.hp,
+          pokemon.pokemonBaseValue.attack,
+          pokemon.pokemonBaseValue.defense,
+          pokemon.pokemonBaseValue.spAttack,
+          pokemon.pokemonBaseValue.spDefense,
+          pokemon.pokemonBaseValue.speed
+        )
+      )
+    )
 }

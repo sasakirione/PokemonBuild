@@ -152,4 +152,17 @@ create table pokemon_master.building_pokemon_tag
 
 alter table pokemon_master.building_pokemon_tag
     owner to sasakirione;
+    
+
+create table pokemon_type_master
+(
+    id   integer not null
+        constraint pokemon_type_master_pk
+            primary key,
+    name varchar not null
+);
+
+alter table pokemon_type_master
+    owner to sasakirione;
+
 

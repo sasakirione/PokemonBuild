@@ -10,10 +10,30 @@ import scala.concurrent.Future
 
 class PokemonRepository @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
   extends TPokemonRepository with HasDatabaseConfigProvider[PostgresProfile] {
+  def getPokemonAbility(pokemonId: Int): Future[Seq[String]] = {
+    db.run(PokemonAbility.join(PokemonAbilityMaster).filter(_._1.pokemonId === pokemonId).map(
+      _._2.name).result
+    )
+  }
+
+  def findPokemonBaseValue(pokemonId: Int): Future[PokemonBaseRow] = {
+    db.run(PokemonBase.filter(_.id === pokemonId).result.head)
+  }
+
+  def findPokemonType(id: Int): Future[Seq[String]] = {
+    db.run(PokemonType.join(PokemonTypeMaster).filter(_._1.pokemonId === id).map(
+      pokemonType => pokemonType._2.name
+    ).result)
+  }
+
+  def getPokemon(id: Int, form: Int): Future[PokemonRow] = {
+    db.run(Pokemon.filter(_.id === id).filter(_.form === form).result.head)
+  }
+
 
   def findPokemonName(input: String): Future[Seq[(Int, String)]] = {
     val query = Pokemon.filter(row => row.name like "%"+input+"%").map( row =>
-      (row.id, row.name)
+      (row.pokemonId, row.name)
     ).result
     db.run(query)
   }

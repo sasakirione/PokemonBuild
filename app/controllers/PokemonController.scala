@@ -15,5 +15,5 @@ class PokemonController @Inject()(cc: ControllerComponents, pokemonUseCase: Poke
     )
   }
 
-  def getPokemon(no: Int) = play.mvc.Results.TODO
+
 }
