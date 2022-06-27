@@ -30,7 +30,6 @@ class PokemonRepository @Inject()(protected val dbConfigProvider: DatabaseConfig
     db.run(Pokemon.filter(_.pokemonId === pokemonId).result.head)
   }
 
-
   def findPokemonName(input: String): Future[Seq[(Int, String)]] = {
     val query = Pokemon.filter(row => row.name like "%"+input+"%").map( row =>
       (row.pokemonId, row.name)

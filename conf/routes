@@ -1,7 +1,3 @@
-# Routes
-# This file defines all application routes (Higher priority routes first)
-# ~~~~
-
 # ユーザー周り
 GET     /login/:userToken           controllers.UserController.findUser(userToken: String)
 
@@ -9,6 +5,5 @@ GET     /login/:userToken           controllers.UserController.findUser(userToke
 # 構築周り
 # ポケモン名のサジェスト用API
 GET     /pokemon/suggest/:input     controllers.PokemonController.getPokemonList(input: String)
-
 # ポケモンの情報を取得
-GET     /pokemon/:no                controllers.PokemonController.getPokemon(no: Int)
+GET     /pokemon/:pokemonId                controllers.PokemonController.getPokemon(pokemonId: Int)
