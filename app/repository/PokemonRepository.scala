@@ -10,9 +10,9 @@ import scala.concurrent.Future
 
 class PokemonRepository @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
   extends TPokemonRepository with HasDatabaseConfigProvider[PostgresProfile] {
-  def getPokemonAbility(pokemonId: Int): Future[Seq[String]] = {
-    db.run(PokemonAbility.join(PokemonAbilityMaster).filter(_._1.pokemonId === pokemonId).map(
-      _._2.name).result
+  def getPokemonAbility(pokemonId: Int): Future[Seq[(Int, String)]] = {
+    db.run(PokemonAbility.join(PokemonAbilityMaster).filter(_._1.pokemonId === pokemonId).map(ability =>
+      (ability._1.ability, ability._2.name)).result
     )
   }
 

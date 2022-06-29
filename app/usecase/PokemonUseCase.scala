@@ -22,6 +22,7 @@ class PokemonUseCase @Inject()(private val pokemonRepository: PokemonRepository,
   def getPokemonData(pokemonId: Int): Future[JsObject] =
     pokemonFactory.getPokemonData(pokemonId).map(pokemon =>
       Json.obj(
+        "id" -> pokemonId,
         "no" -> pokemon.pokemonNo,
         "form" -> pokemon.pokemonFormNo,
         "name" -> pokemon.name,
